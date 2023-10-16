@@ -22,6 +22,7 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
         const string MONTH_SCHEDULE_URL = BASE_URL + "WorkSchedule/GetCalendarInfoForActivePosition";
 
         WinTidUser user;
+        string csrfToken; //"Cross-Site Request Forgery" protection token received from the server
 
         public WinTid()
         {
@@ -37,6 +38,11 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
         {
             string payload = Utils.StringFormat(Resources.WinTidLoginPayload, credentials.Username, credentials.Password);
 
+            if (string.IsNullOrEmpty(csrfToken))
+            {
+                RefreshCSRFToken();
+            }
+
             HttpWebResponse webResponse = MakePOSTRequest(LOGIN_URL, payload);
             if (!IsResponseSuccess(webResponse))
             {
@@ -44,6 +50,15 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
             }
             this.user = GetWinTidUser();
             return true;
+        }
+
+        private void RefreshCSRFToken()
+        {
+            var webResponse = WebUtils.MakeGETRequestWithCookies(BASE_URL);
+            var response = WebUtils.ReadResponse(webResponse);
+
+            //Scan the HTML
+            csrfToken = response.ExtractBetween("var REQUEST_VERIFICATION_TOKEN = \"", '"');
         }
 
         private WinTidUser GetWinTidUser()
@@ -197,7 +212,13 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
         private HttpWebResponse MakePOSTRequest(string url, string requestContent)
         {
             var webRequest = WebUtils.CreateRequestWithCookies(url);
+            AddRequiredHeaders(webRequest.Headers);
             return WebUtils.MakePOSTRequest(webRequest, requestContent, "application/json");
+        }
+
+        private void AddRequiredHeaders(WebHeaderCollection headers)
+        {
+            headers.Add("RequestVerificationToken", csrfToken);
         }
 
         private bool IsResponseSuccess(HttpWebResponse webResponse)

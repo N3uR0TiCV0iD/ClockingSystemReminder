@@ -90,10 +90,13 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
         {
             //TMP
 #if DEBUG
-            this.azureADToken = System.IO.File.ReadAllText("ad.txt");
             var handler = new JwtSecurityTokenHandler();
-            var decodedToken = handler.ReadJwtToken(azureADToken);
-            if (decodedToken.ValidTo < DateTime.UtcNow)
+            if (System.IO.File.Exists("ad.txt"))
+            {
+                this.azureADToken = System.IO.File.ReadAllText("ad.txt");
+            }
+            var decodedToken = azureADToken != null ? handler.ReadJwtToken(azureADToken) : null;
+            if (decodedToken == null || decodedToken.ValidTo < DateTime.UtcNow)
             {
             // /TMP
 #endif
@@ -105,9 +108,12 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
                 System.IO.File.WriteAllText("ad.txt", this.azureADToken);
             }
 
-            this.skypeToken = System.IO.File.ReadAllText("sk.txt");
-            decodedToken = handler.ReadJwtToken(skypeToken);
-            if (decodedToken.ValidTo < DateTime.UtcNow)
+            if (System.IO.File.Exists("sk.txt"))
+            {
+                this.skypeToken = System.IO.File.ReadAllText("sk.txt");
+            }
+            decodedToken = skypeToken != null ? handler.ReadJwtToken(skypeToken) : null;
+            if (decodedToken == null || decodedToken.ValidTo < DateTime.UtcNow)
             {
             // /TMP
 #endif
