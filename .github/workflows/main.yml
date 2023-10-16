@@ -1,0 +1,77 @@
+name: Build & Release
+
+on:
+  workflow_dispatch:
+
+env:
+  DOTNET_VERSION: 6.0.x
+  PROJECT_NAME: ClockingSystemReminder
+  PROJECT_FILE: ClockingSystemReminder\ClockingSystemReminder.csproj
+
+jobs:
+  build:
+    name: Build and release
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 1
+
+    - name: Install .NET ${{ env.DOTNET_VERSION }} SDK
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    # Execute all unit tests in the solution
+    #- name: Execute unit tests
+    #  run: dotnet test --configuration Release
+
+    - name: Publish application
+      run: dotnet publish ${{ env.PROJECT_FILE }} --configuration Release --output ./publish
+
+    - name: Set build version
+      id: init_version
+      run: |
+        $today = (Get-Date -Format "yyyyMMdd")
+        $versionPrefix = "${env:BRANCH_NAME}-$today"
+
+        git fetch --tags
+        $latestRevision = git for-each-ref refs/tags/$versionPrefix-r* --sort=-taggerdate --format "%(refname:short)" | ForEach-Object { ($_ -split "-r")[1] } | Select-Object -First 1
+
+        if (-not $latestRevision) {
+            $nextRevision = 1
+        } else {
+            $nextRevision = [int]$latestRevision + 1
+        }
+        echo "build_version=$versionPrefix-r$nextRevision" >> $env:GITHUB_OUTPUT
+      env:
+        BRANCH_NAME: ${{ github.ref_name }}
+
+    - name: Package release
+      run: Compress-Archive -Path ./publish/* -DestinationPath ${{ steps.init_version.outputs.build_version }}.zip
+
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1
+      with:
+        tag_name: ${{ steps.init_version.outputs.build_version }}
+        release_name: ${{ steps.init_version.outputs.build_version }}
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Upload release
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./${{ steps.init_version.outputs.build_version }}.zip
+        asset_name: ${{ env.PROJECT_NAME }}_${{ steps.init_version.outputs.build_version }}.zip
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
