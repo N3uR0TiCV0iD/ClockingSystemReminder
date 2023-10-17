@@ -409,15 +409,17 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
 
         private HashSet<string> GetParticipantIDs(JObject callLog)
         {
-            var participantsList = callLog.Value<JArray>("participants");
-            if (participantsList == null)
+            var participants = callLog.Value<JArray>("participants");
+            if (participants == null)
             {
                 //1 on 1 call
                 var originator = callLog.Value<string>("originator");
                 var target = callLog.Value<string>("target");
                 return new HashSet<string> { originator, target };
             }
-            var participantIDs = new HashSet<string>(participantsList.Values<string>());
+            var validParticipants = participants.Values<string>()
+                                                .Where(p => p.StartsWith("8:"));
+            var participantIDs = new HashSet<string>(validParticipants);
             return participantIDs;
         }
 

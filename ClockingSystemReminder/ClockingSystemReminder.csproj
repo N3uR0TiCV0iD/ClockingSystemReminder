@@ -3,10 +3,14 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <OutputType>WinExe</OutputType> <!-- Do not create a console window on startup -->
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
 	<!-- The project started as a .NET 4.5 project. To be enabled in the future :)
 	<Nullable>enable</Nullable>
 	-->
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Identity.Client" Version="4.49.1" />
