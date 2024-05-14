@@ -16,6 +16,14 @@ namespace ClockingSystemReminder.Abstractions.Systems
             return Utils.OpenSystemRegistryKey(this.SystemName);
         }
 
+        public void LoadSettings()
+        {
+            using (var registryKey = OpenRegistryKey())
+            {
+                LoadSettings(registryKey);
+            }
+        }
+
         public virtual BasicCredentials GetStoredCredentials(RegistryKey systemRegistryKey)
         {
             if (TryGetStoredCredentials(systemRegistryKey, out string username, out string password))
@@ -67,6 +75,8 @@ namespace ClockingSystemReminder.Abstractions.Systems
         }
 
         public abstract string GetWebLoginURL();
+        public abstract void LoadSettings(RegistryKey systemRegistryKey);
+        public abstract void OpenSettings();
         public abstract bool ClockIn();
         public abstract bool ClockOut();
         public abstract bool Login(BasicCredentials credentials);

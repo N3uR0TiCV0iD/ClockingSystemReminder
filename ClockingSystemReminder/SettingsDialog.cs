@@ -53,8 +53,12 @@ namespace ClockingSystemReminder
 
         private void clockingSystemBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.ClockingSystem = ClockingSystemResolver.Resolve(clockingSystemBox.Text);
+            this.ClockingSystem = ClockingSystemResolver.Load(clockingSystemBox.Text);
             OKButtonEnableCheck();
+        }
+
+        private void clockingSystemConfigButton_Click(object sender, EventArgs e)
+        {
         }
 
         private void collaborationSystemBox_SelectedIndexChanged(object sender, EventArgs e)

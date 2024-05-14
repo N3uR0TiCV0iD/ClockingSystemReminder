@@ -20,9 +20,12 @@ namespace ClockingSystemReminder
 #if DEBUG
         private static void DEBUG_Startup()
         {
-            var jira = TicketingSystems.TicketingSystemResolver.Load("Jira");
-            var msTeams = CollaborationSystems.CollaborationSystemResolver.Load("MSTeams");
-            Application.Run(new TimeRegistrationForm(msTeams, jira));
+            var ticketingSystem = TicketingSystems.TicketingSystemResolver.Load("Jira");
+            var collaborationSystem = CollaborationSystems.CollaborationSystemResolver.Load("MSTeams");
+
+            var registerDate = new DateTime(2023, 5, 23);
+            var workTime = new TimeSpan(7, 30, 0).Add(TimeSpan.FromMinutes(30));
+            Application.Run(new TimeRegistrationForm(registerDate, workTime, collaborationSystem, ticketingSystem));
         }
 #endif
 
@@ -35,7 +38,7 @@ namespace ClockingSystemReminder
             LocalEncrypter = new LocalEncrypter("Digi7aLH0urgla55");
 
 #if DEBUG
-            DEBUG_Startup();
+            //DEBUG_Startup();
 #endif
 
             using (var appRegistryKey = Registry.CurrentUser.CreateSubKey(REGISTRY_KEY_PATH))

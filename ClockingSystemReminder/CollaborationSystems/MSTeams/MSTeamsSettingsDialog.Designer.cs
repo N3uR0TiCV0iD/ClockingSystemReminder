@@ -1,6 +1,6 @@
 ﻿namespace ClockingSystemReminder.CollaborationSystems.MSTeams
 {
-    partial class MSTeamsSettingsForm
+    partial class MSTeamsSettingsDialog
     {
         /// <summary>
         /// Required designer variable.

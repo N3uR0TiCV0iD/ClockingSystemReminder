@@ -28,165 +28,173 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.clockingSystemLabel = new System.Windows.Forms.Label();
-            this.clockingSystemBox = new System.Windows.Forms.ComboBox();
-            this.collaborationSystemBox = new System.Windows.Forms.ComboBox();
-            this.collaborationSystemConfigButton = new System.Windows.Forms.Button();
-            this.collaborationSystemLabel = new System.Windows.Forms.Label();
-            this.ticketingSystemLabel = new System.Windows.Forms.Label();
-            this.ticketingSystemBox = new System.Windows.Forms.ComboBox();
-            this.ticketingSystemConfigButton = new System.Windows.Forms.Button();
-            this.Cancel_Button = new System.Windows.Forms.Button();
-            this.OK_Button = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            clockingSystemLabel = new System.Windows.Forms.Label();
+            clockingSystemBox = new System.Windows.Forms.ComboBox();
+            collaborationSystemBox = new System.Windows.Forms.ComboBox();
+            collaborationSystemConfigButton = new System.Windows.Forms.Button();
+            collaborationSystemLabel = new System.Windows.Forms.Label();
+            ticketingSystemLabel = new System.Windows.Forms.Label();
+            ticketingSystemBox = new System.Windows.Forms.ComboBox();
+            ticketingSystemConfigButton = new System.Windows.Forms.Button();
+            Cancel_Button = new System.Windows.Forms.Button();
+            OK_Button = new System.Windows.Forms.Button();
+            clockingSystemConfigButton = new System.Windows.Forms.Button();
+            SuspendLayout();
             // 
             // clockingSystemLabel
             // 
-            this.clockingSystemLabel.AutoSize = true;
-            this.clockingSystemLabel.Location = new System.Drawing.Point(5, 10);
-            this.clockingSystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.clockingSystemLabel.Name = "clockingSystemLabel";
-            this.clockingSystemLabel.Size = new System.Drawing.Size(98, 15);
-            this.clockingSystemLabel.TabIndex = 0;
-            this.clockingSystemLabel.Text = "Clocking System:";
+            clockingSystemLabel.AutoSize = true;
+            clockingSystemLabel.Location = new System.Drawing.Point(5, 10);
+            clockingSystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            clockingSystemLabel.Name = "clockingSystemLabel";
+            clockingSystemLabel.Size = new System.Drawing.Size(98, 15);
+            clockingSystemLabel.TabIndex = 0;
+            clockingSystemLabel.Text = "Clocking System:";
             // 
             // clockingSystemBox
             // 
-            this.clockingSystemBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.clockingSystemBox.FormattingEnabled = true;
-            this.clockingSystemBox.Items.AddRange(new object[] {
-            "WinTid",
-            "Capitech",
-            "[None]"});
-            this.clockingSystemBox.Location = new System.Drawing.Point(130, 7);
-            this.clockingSystemBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.clockingSystemBox.Name = "clockingSystemBox";
-            this.clockingSystemBox.Size = new System.Drawing.Size(140, 23);
-            this.clockingSystemBox.TabIndex = 1;
-            this.clockingSystemBox.SelectedIndexChanged += new System.EventHandler(this.clockingSystemBox_SelectedIndexChanged);
+            clockingSystemBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            clockingSystemBox.FormattingEnabled = true;
+            clockingSystemBox.Items.AddRange(new object[] { "WinTid", "Capitech", "[None]" });
+            clockingSystemBox.Location = new System.Drawing.Point(130, 7);
+            clockingSystemBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            clockingSystemBox.Name = "clockingSystemBox";
+            clockingSystemBox.Size = new System.Drawing.Size(140, 23);
+            clockingSystemBox.TabIndex = 1;
+            clockingSystemBox.SelectedIndexChanged += clockingSystemBox_SelectedIndexChanged;
             // 
             // collaborationSystemBox
             // 
-            this.collaborationSystemBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.collaborationSystemBox.FormattingEnabled = true;
-            this.collaborationSystemBox.Items.AddRange(new object[] {
-            "MSTeams"});
-            this.collaborationSystemBox.Location = new System.Drawing.Point(130, 37);
-            this.collaborationSystemBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.collaborationSystemBox.Name = "collaborationSystemBox";
-            this.collaborationSystemBox.Size = new System.Drawing.Size(140, 23);
-            this.collaborationSystemBox.TabIndex = 3;
-            this.collaborationSystemBox.SelectedIndexChanged += new System.EventHandler(this.collaborationSystemBox_SelectedIndexChanged);
+            collaborationSystemBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            collaborationSystemBox.FormattingEnabled = true;
+            collaborationSystemBox.Items.AddRange(new object[] { "MSTeams" });
+            collaborationSystemBox.Location = new System.Drawing.Point(130, 37);
+            collaborationSystemBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            collaborationSystemBox.Name = "collaborationSystemBox";
+            collaborationSystemBox.Size = new System.Drawing.Size(140, 23);
+            collaborationSystemBox.TabIndex = 4;
+            collaborationSystemBox.SelectedIndexChanged += collaborationSystemBox_SelectedIndexChanged;
             // 
             // collaborationSystemConfigButton
             // 
-            this.collaborationSystemConfigButton.Enabled = false;
-            this.collaborationSystemConfigButton.Location = new System.Drawing.Point(275, 36);
-            this.collaborationSystemConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.collaborationSystemConfigButton.Name = "collaborationSystemConfigButton";
-            this.collaborationSystemConfigButton.Size = new System.Drawing.Size(90, 25);
-            this.collaborationSystemConfigButton.TabIndex = 4;
-            this.collaborationSystemConfigButton.Text = "Configure";
-            this.collaborationSystemConfigButton.UseVisualStyleBackColor = true;
-            this.collaborationSystemConfigButton.Click += new System.EventHandler(this.collaborationSystemConfigButton_Click);
+            collaborationSystemConfigButton.Enabled = false;
+            collaborationSystemConfigButton.Location = new System.Drawing.Point(275, 36);
+            collaborationSystemConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            collaborationSystemConfigButton.Name = "collaborationSystemConfigButton";
+            collaborationSystemConfigButton.Size = new System.Drawing.Size(90, 25);
+            collaborationSystemConfigButton.TabIndex = 5;
+            collaborationSystemConfigButton.Text = "Configure";
+            collaborationSystemConfigButton.UseVisualStyleBackColor = true;
+            collaborationSystemConfigButton.Click += collaborationSystemConfigButton_Click;
             // 
             // collaborationSystemLabel
             // 
-            this.collaborationSystemLabel.AutoSize = true;
-            this.collaborationSystemLabel.Location = new System.Drawing.Point(5, 40);
-            this.collaborationSystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.collaborationSystemLabel.Name = "collaborationSystemLabel";
-            this.collaborationSystemLabel.Size = new System.Drawing.Size(123, 15);
-            this.collaborationSystemLabel.TabIndex = 2;
-            this.collaborationSystemLabel.Text = "Collaboration System:";
+            collaborationSystemLabel.AutoSize = true;
+            collaborationSystemLabel.Location = new System.Drawing.Point(5, 40);
+            collaborationSystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            collaborationSystemLabel.Name = "collaborationSystemLabel";
+            collaborationSystemLabel.Size = new System.Drawing.Size(123, 15);
+            collaborationSystemLabel.TabIndex = 3;
+            collaborationSystemLabel.Text = "Collaboration System:";
             // 
             // ticketingSystemLabel
             // 
-            this.ticketingSystemLabel.AutoSize = true;
-            this.ticketingSystemLabel.Location = new System.Drawing.Point(5, 70);
-            this.ticketingSystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.ticketingSystemLabel.Name = "ticketingSystemLabel";
-            this.ticketingSystemLabel.Size = new System.Drawing.Size(99, 15);
-            this.ticketingSystemLabel.TabIndex = 5;
-            this.ticketingSystemLabel.Text = "Ticketing System:";
+            ticketingSystemLabel.AutoSize = true;
+            ticketingSystemLabel.Location = new System.Drawing.Point(5, 70);
+            ticketingSystemLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            ticketingSystemLabel.Name = "ticketingSystemLabel";
+            ticketingSystemLabel.Size = new System.Drawing.Size(99, 15);
+            ticketingSystemLabel.TabIndex = 6;
+            ticketingSystemLabel.Text = "Ticketing System:";
             // 
             // ticketingSystemBox
             // 
-            this.ticketingSystemBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ticketingSystemBox.FormattingEnabled = true;
-            this.ticketingSystemBox.Items.AddRange(new object[] {
-            "Jira"});
-            this.ticketingSystemBox.Location = new System.Drawing.Point(130, 67);
-            this.ticketingSystemBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ticketingSystemBox.Name = "ticketingSystemBox";
-            this.ticketingSystemBox.Size = new System.Drawing.Size(140, 23);
-            this.ticketingSystemBox.TabIndex = 6;
-            this.ticketingSystemBox.SelectedIndexChanged += new System.EventHandler(this.ticketingSystemBox_SelectedIndexChanged);
+            ticketingSystemBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            ticketingSystemBox.FormattingEnabled = true;
+            ticketingSystemBox.Items.AddRange(new object[] { "Jira" });
+            ticketingSystemBox.Location = new System.Drawing.Point(130, 67);
+            ticketingSystemBox.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ticketingSystemBox.Name = "ticketingSystemBox";
+            ticketingSystemBox.Size = new System.Drawing.Size(140, 23);
+            ticketingSystemBox.TabIndex = 7;
+            ticketingSystemBox.SelectedIndexChanged += ticketingSystemBox_SelectedIndexChanged;
             // 
             // ticketingSystemConfigButton
             // 
-            this.ticketingSystemConfigButton.Enabled = false;
-            this.ticketingSystemConfigButton.Location = new System.Drawing.Point(275, 66);
-            this.ticketingSystemConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.ticketingSystemConfigButton.Name = "ticketingSystemConfigButton";
-            this.ticketingSystemConfigButton.Size = new System.Drawing.Size(90, 25);
-            this.ticketingSystemConfigButton.TabIndex = 7;
-            this.ticketingSystemConfigButton.Text = "Configure";
-            this.ticketingSystemConfigButton.UseVisualStyleBackColor = true;
-            this.ticketingSystemConfigButton.Click += new System.EventHandler(this.ticketingSystemConfigButton_Click);
+            ticketingSystemConfigButton.Enabled = false;
+            ticketingSystemConfigButton.Location = new System.Drawing.Point(275, 66);
+            ticketingSystemConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            ticketingSystemConfigButton.Name = "ticketingSystemConfigButton";
+            ticketingSystemConfigButton.Size = new System.Drawing.Size(90, 25);
+            ticketingSystemConfigButton.TabIndex = 8;
+            ticketingSystemConfigButton.Text = "Configure";
+            ticketingSystemConfigButton.UseVisualStyleBackColor = true;
+            ticketingSystemConfigButton.Click += ticketingSystemConfigButton_Click;
             // 
             // Cancel_Button
             // 
-            this.Cancel_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_Button.Location = new System.Drawing.Point(180, 97);
-            this.Cancel_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Cancel_Button.Name = "Cancel_Button";
-            this.Cancel_Button.Size = new System.Drawing.Size(90, 25);
-            this.Cancel_Button.TabIndex = 8;
-            this.Cancel_Button.Text = "Cancel";
-            this.Cancel_Button.UseVisualStyleBackColor = true;
-            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
+            Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            Cancel_Button.Location = new System.Drawing.Point(180, 97);
+            Cancel_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Cancel_Button.Name = "Cancel_Button";
+            Cancel_Button.Size = new System.Drawing.Size(90, 25);
+            Cancel_Button.TabIndex = 9;
+            Cancel_Button.Text = "Cancel";
+            Cancel_Button.UseVisualStyleBackColor = true;
+            Cancel_Button.Click += Cancel_Button_Click;
             // 
             // OK_Button
             // 
-            this.OK_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK_Button.Enabled = false;
-            this.OK_Button.Location = new System.Drawing.Point(275, 97);
-            this.OK_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.OK_Button.Name = "OK_Button";
-            this.OK_Button.Size = new System.Drawing.Size(90, 25);
-            this.OK_Button.TabIndex = 9;
-            this.OK_Button.Text = "OK";
-            this.OK_Button.UseVisualStyleBackColor = true;
-            this.OK_Button.Click += new System.EventHandler(this.OK_Button_Click);
+            OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            OK_Button.Enabled = false;
+            OK_Button.Location = new System.Drawing.Point(275, 97);
+            OK_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            OK_Button.Name = "OK_Button";
+            OK_Button.Size = new System.Drawing.Size(90, 25);
+            OK_Button.TabIndex = 10;
+            OK_Button.Text = "OK";
+            OK_Button.UseVisualStyleBackColor = true;
+            OK_Button.Click += OK_Button_Click;
+            // 
+            // clockingSystemConfigButton
+            // 
+            clockingSystemConfigButton.Enabled = false;
+            clockingSystemConfigButton.Location = new System.Drawing.Point(275, 5);
+            clockingSystemConfigButton.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            clockingSystemConfigButton.Name = "clockingSystemConfigButton";
+            clockingSystemConfigButton.Size = new System.Drawing.Size(90, 25);
+            clockingSystemConfigButton.TabIndex = 2;
+            clockingSystemConfigButton.Text = "Configure";
+            clockingSystemConfigButton.UseVisualStyleBackColor = true;
+            clockingSystemConfigButton.Click += clockingSystemConfigButton_Click;
             // 
             // SettingsDialog
             // 
-            this.AcceptButton = this.OK_Button;
+            this.AcceptButton = OK_Button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel_Button;
+            this.CancelButton = Cancel_Button;
             this.ClientSize = new System.Drawing.Size(370, 127);
-            this.Controls.Add(this.Cancel_Button);
-            this.Controls.Add(this.OK_Button);
-            this.Controls.Add(this.ticketingSystemBox);
-            this.Controls.Add(this.ticketingSystemConfigButton);
-            this.Controls.Add(this.ticketingSystemLabel);
-            this.Controls.Add(this.collaborationSystemBox);
-            this.Controls.Add(this.collaborationSystemConfigButton);
-            this.Controls.Add(this.collaborationSystemLabel);
-            this.Controls.Add(this.clockingSystemBox);
-            this.Controls.Add(this.clockingSystemLabel);
+            this.Controls.Add(clockingSystemConfigButton);
+            this.Controls.Add(Cancel_Button);
+            this.Controls.Add(OK_Button);
+            this.Controls.Add(ticketingSystemBox);
+            this.Controls.Add(ticketingSystemConfigButton);
+            this.Controls.Add(ticketingSystemLabel);
+            this.Controls.Add(collaborationSystemBox);
+            this.Controls.Add(collaborationSystemConfigButton);
+            this.Controls.Add(collaborationSystemLabel);
+            this.Controls.Add(clockingSystemBox);
+            this.Controls.Add(clockingSystemLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.Name = "SettingsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Settings";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -201,5 +209,6 @@
         private System.Windows.Forms.Button ticketingSystemConfigButton;
         private System.Windows.Forms.Button Cancel_Button;
         private System.Windows.Forms.Button OK_Button;
+        private System.Windows.Forms.Button clockingSystemConfigButton;
     }
 }

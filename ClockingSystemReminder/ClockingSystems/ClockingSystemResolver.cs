@@ -7,12 +7,15 @@ namespace ClockingSystemReminder.ClockingSystems
 {
     public static class ClockingSystemResolver
     {
-        public static ClockingSystem Resolve(string systemName)
+        public static ClockingSystem Load(string systemName)
         {
             switch (systemName)
             {
                 case "[None]": return new VoidClockingSystem();
-                case "WinTid": return new WinTid.WinTid();
+                case "WinTid":
+                    var winTid = new WinTid.WinTid();
+                    winTid.LoadSettings();
+                    return winTid;
                 case "MyCapitech": return new MyCapitech();
             }
             return null;

@@ -29,10 +29,10 @@ jobs:
 
     # Execute all unit tests in the solution
     #- name: Execute unit tests
-    #  run: dotnet test --configuration Release
+    #  run: dotnet test -c Release
 
     - name: Publish application
-      run: dotnet publish ${{ env.PROJECT_FILE }} --configuration Release --output ./publish
+      run: dotnet publish ${{ env.PROJECT_FILE }} -c Release --output ./publish
 
     - name: Set build version
       id: init_version

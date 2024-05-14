@@ -19,10 +19,13 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
         const string CLOCK_IN_URL = BASE_URL + "Registration/RegisterIn";
         const string CLOCK_OUT_URL = BASE_URL + "Registration/RegisterOut";
         const string APPROVE_MONTH_URL = BASE_URL + "Overview/SetPeriodApproval";
+        const string GET_REGISTRATIONS_URL = BASE_URL + "Maintenance/GetDayModel";
+        const string MANUAL_REGISTRATION_URL = BASE_URL + "Maintenance/SaveRegistrations";
         const string MONTH_SCHEDULE_URL = BASE_URL + "WorkSchedule/GetCalendarInfoForActivePosition";
 
         WinTidUser user;
         string csrfToken; //"Cross-Site Request Forgery" protection token received from the server
+        WinTidSettings settings;
 
         public WinTid()
         {
@@ -32,6 +35,45 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
         public override string GetWebLoginURL()
         {
             return BASE_URL;
+        }
+
+        public override void LoadSettings(RegistryKey systemRegistryKey)
+        {
+            this.settings = new WinTidSettings();
+            var has24_7Duty = systemRegistryKey.GetValue("Has24_7Duty");
+            if (has24_7Duty != null && (int)has24_7Duty == 1)
+            {
+                var startDate = systemRegistryKey.GetDateTimeValue("24_7-StartDate");
+                var rotationWeeks = systemRegistryKey.GetValue("24_7-RotationWeeks");
+                settings.WeekRotationSchedule = new WeekRotationSchedule(startDate, (int)rotationWeeks);
+            }
+        }
+
+        public override void OpenSettings()
+        {
+            using (var settingsDialog = new WinTidSettingsDialog(this.settings))
+            {
+                if (settingsDialog.ShowDialog() == DialogResult.OK)
+                {
+                    settings.WeekRotationSchedule = settingsDialog.WeekRotationSchedule;
+                    SaveSettings();
+                }
+            }
+        }
+
+        private void SaveSettings()
+        {
+            using (var registryKey = OpenRegistryKey())
+            {
+                var rotationSchedule = settings.WeekRotationSchedule;
+                var hasRotationSchedule = rotationSchedule != null;
+                if (hasRotationSchedule)
+                {
+                    registryKey.SetDateTimeValue("24_7-StartDate", rotationSchedule.StartDate);
+                    registryKey.SetValue("24_7-RotationWeeks", rotationSchedule.RotationWeeks, RegistryValueKind.DWord);
+                }
+                registryKey.SetValue("Has24_7Duty", hasRotationSchedule ? 1 : 0, RegistryValueKind.DWord);
+            }
         }
 
         public override bool Login(BasicCredentials credentials)
@@ -197,6 +239,47 @@ namespace ClockingSystemReminder.ClockingSystems.WinTid
         }
 
         private bool ManualWeekApproval()
+        {
+            return false;
+        }
+
+        public override bool OnPostClockOut()
+        {
+            return true;
+            var today = DateTime.Today;
+            if (!settings.WeekRotationSchedule.IsDateInRotation(today))
+            {
+                return true;
+            }
+            var weekNumber = Utils.GetWeekNumber(today);
+            using (var registryKey = base.OpenRegistryKey())
+            {
+                var lastRegistrationWeek = (int)registryKey.GetValue("24_7-LastRegistrationWeek", -1);
+                if (weekNumber != lastRegistrationWeek)
+                {
+                    bool success = Register24_7DutyProcess(today, weekNumber);
+                    if (success)
+                    {
+                        registryKey.SetValue("24_7-LastRegistrationWeek", weekNumber, RegistryValueKind.DWord);
+                    }
+                    return success;
+                }
+            }
+            return true;
+        }
+
+        private bool Register24_7DutyProcess(DateTime today, int weekNumber)
+        {
+            if (MessageBox.Show("Looks like it's time to register your 24/7 week!\n\nWould you like to automatically register it?",
+                                "Auto register 24/7 week?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                return AutoRegister24_7DutyWeek(today, weekNumber);
+            }
+            ManualWeekApproval();
+            return true;
+        }
+
+        private bool AutoRegister24_7DutyWeek(DateTime today, int weekNumber)
         {
             return false;
         }

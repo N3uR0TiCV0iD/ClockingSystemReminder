@@ -1,12 +1,18 @@
 ﻿using System;
 using ClockingSystemReminder.Abstractions.Systems;
 using ClockingSystemReminder.Data;
+using Microsoft.Win32;
 
 namespace ClockingSystemReminder.ClockingSystems.Void
 {
     public class VoidClockingSystem : ClockingSystem
     {
         public override string FriendlySystemName => "[None]";
+
+        public override void LoadSettings(RegistryKey systemRegistryKey)
+        {
+            throw new NotImplementedException();
+        }
 
         public override bool ClockIn()
         {
@@ -26,6 +32,10 @@ namespace ClockingSystemReminder.ClockingSystems.Void
         public override bool Login(BasicCredentials credentials)
         {
             return true;
+        }
+
+        public override void OpenSettings()
+        {
         }
 
         public override bool LogOut()

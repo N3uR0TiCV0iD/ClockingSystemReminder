@@ -58,7 +58,7 @@ namespace ClockingSystemReminder
 
         private static bool LoadSystems(RegistryKey appRegistryKey)
         {
-            clockingSystem = LoadSystem(appRegistryKey, "ClockingSystem", ClockingSystemResolver.Resolve);
+            clockingSystem = LoadSystem(appRegistryKey, "ClockingSystem", ClockingSystemResolver.Load);
             ticketingSystem = LoadSystem(appRegistryKey, "TicketingSystem", TicketingSystemResolver.Load);
             collaborationSystem = LoadSystem(appRegistryKey, "CollaborationSystem", CollaborationSystemResolver.Load);
 
@@ -344,15 +344,20 @@ namespace ClockingSystemReminder
             systemForm.Invoke(() =>
             {
                 systemForm.OnClockOut();
-                using (var timeRegistrationForm = new TimeRegistrationForm(collaborationSystem, ticketingSystem))
-                {
-                    timeRegistrationForm.ShowDialog();
-                }
+                OpenTimeRegistration(DateTime.Today, ClockingManager.TimeWorked);
             });
             if (!clockingSystem.OnPostClockOut())
             {
                 MessageBox.Show("The Post-ClockOut process has failed!",
                                 "Post-ClockOut failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        public static void OpenTimeRegistration(DateTime registerDate, TimeSpan workTime)
+        {
+            using (var timeRegistrationForm = new TimeRegistrationForm(registerDate, workTime, collaborationSystem, ticketingSystem))
+            {
+                timeRegistrationForm.ShowDialog();
             }
         }
 

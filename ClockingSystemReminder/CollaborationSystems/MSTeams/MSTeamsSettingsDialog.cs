@@ -4,11 +4,11 @@ using System.Windows.Forms;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 namespace ClockingSystemReminder.CollaborationSystems.MSTeams
 {
-    public partial class MSTeamsSettingsForm : Form
+    public partial class MSTeamsSettingsDialog : Form
     {
         public string TenantID => tenantIDBox.Text;
 
-        public MSTeamsSettingsForm(MSTeamsSettings settings)
+        public MSTeamsSettingsDialog(MSTeamsSettings settings)
         {
             InitializeComponent();
             this.tenantIDBox.Text = settings.TenantID;

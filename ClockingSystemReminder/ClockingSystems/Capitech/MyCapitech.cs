@@ -35,6 +35,11 @@ namespace ClockingSystemReminder.ClockingSystems.Capitech
             }
         }
 
+        public override void LoadSettings(RegistryKey systemRegistryKey)
+        {
+            throw new NotImplementedException();
+        }
+
         private List<CapitechLoginClient> GetLoginClients()
         {
             var webResponse = MakePOSTRequest(AVAILABLE_CLIENTS_URL, null);
@@ -238,6 +243,10 @@ namespace ClockingSystemReminder.ClockingSystems.Capitech
             webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.125 Safari/537.36";
             webRequest.Accept = "application/json, text/javascript, */*; q=0.01";
             webRequest.Headers.Add("X-Requested-With", "XMLHttpRequest");
+        }
+
+        public override void OpenSettings()
+        {
         }
 
         public override bool LogOut()

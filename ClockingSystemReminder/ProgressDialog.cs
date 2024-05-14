@@ -40,16 +40,14 @@ namespace ClockingSystemReminder
         {
             const int SC_MOVE = 0xF010;
             const int WM_SYSCOMMAND = 0x0112;
-            switch (m.Msg)
+            if (m.Msg == WM_SYSCOMMAND)
             {
-                case WM_SYSCOMMAND:
-                    var command = m.WParam.ToInt32() & 0xFFF0;
-                    if (command == SC_MOVE)
-                    {
-                        //Do nothing, ie: prevent it from moving around
-                        return;
-                    }
-                break;
+                var command = m.WParam.ToInt32() & 0xFFF0;
+                if (command == SC_MOVE)
+                {
+                    //Do nothing, ie: prevent it from moving around
+                    return;
+                }
             }
             base.WndProc(ref m);
         }
