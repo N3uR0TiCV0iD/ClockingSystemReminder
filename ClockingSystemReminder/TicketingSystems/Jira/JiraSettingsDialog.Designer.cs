@@ -28,170 +28,169 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.urlLabel = new System.Windows.Forms.Label();
-            this.jiraURLBox = new System.Windows.Forms.TextBox();
-            this.jiraEmailLabel = new System.Windows.Forms.Label();
-            this.jiraEmailBox = new System.Windows.Forms.TextBox();
-            this.jiraTokenLabel = new System.Windows.Forms.Label();
-            this.tempoTokenLabel = new System.Windows.Forms.Label();
-            this.jiraTokenBox = new System.Windows.Forms.TextBox();
-            this.tempoTokenBox = new System.Windows.Forms.TextBox();
-            this.jiraTokenSetupLabel = new System.Windows.Forms.LinkLabel();
-            this.tempoTokenSetupLabel = new System.Windows.Forms.LinkLabel();
-            this.Cancel_Button = new System.Windows.Forms.Button();
-            this.OK_Button = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            urlLabel = new System.Windows.Forms.Label();
+            jiraURLBox = new System.Windows.Forms.TextBox();
+            jiraEmailLabel = new System.Windows.Forms.Label();
+            jiraEmailBox = new System.Windows.Forms.TextBox();
+            jiraTokenLabel = new System.Windows.Forms.Label();
+            tempoTokenLabel = new System.Windows.Forms.Label();
+            jiraTokenBox = new System.Windows.Forms.TextBox();
+            tempoTokenBox = new System.Windows.Forms.TextBox();
+            jiraTokenSetupLabel = new System.Windows.Forms.LinkLabel();
+            tempoTokenSetupLabel = new System.Windows.Forms.LinkLabel();
+            Cancel_Button = new System.Windows.Forms.Button();
+            OK_Button = new System.Windows.Forms.Button();
+            SuspendLayout();
             // 
             // urlLabel
             // 
-            this.urlLabel.AutoSize = true;
-            this.urlLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.urlLabel.Location = new System.Drawing.Point(5, 10);
-            this.urlLabel.Name = "urlLabel";
-            this.urlLabel.Size = new System.Drawing.Size(33, 15);
-            this.urlLabel.TabIndex = 0;
-            this.urlLabel.Text = "URL:";
+            urlLabel.AutoSize = true;
+            urlLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            urlLabel.Location = new System.Drawing.Point(5, 10);
+            urlLabel.Name = "urlLabel";
+            urlLabel.Size = new System.Drawing.Size(33, 15);
+            urlLabel.TabIndex = 0;
+            urlLabel.Text = "URL:";
             // 
             // jiraURLBox
             // 
-            this.jiraURLBox.Location = new System.Drawing.Point(40, 7);
-            this.jiraURLBox.Name = "jiraURLBox";
-            this.jiraURLBox.Size = new System.Drawing.Size(325, 23);
-            this.jiraURLBox.TabIndex = 1;
-            this.jiraURLBox.TextChanged += new System.EventHandler(this.jiraURLBox_TextChanged);
+            jiraURLBox.Location = new System.Drawing.Point(40, 7);
+            jiraURLBox.Name = "jiraURLBox";
+            jiraURLBox.Size = new System.Drawing.Size(325, 23);
+            jiraURLBox.TabIndex = 1;
+            jiraURLBox.TextChanged += jiraURLBox_TextChanged;
             // 
             // jiraEmailLabel
             // 
-            this.jiraEmailLabel.AutoSize = true;
-            this.jiraEmailLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.jiraEmailLabel.Location = new System.Drawing.Point(5, 40);
-            this.jiraEmailLabel.Name = "jiraEmailLabel";
-            this.jiraEmailLabel.Size = new System.Drawing.Size(39, 15);
-            this.jiraEmailLabel.TabIndex = 2;
-            this.jiraEmailLabel.Text = "Email:";
+            jiraEmailLabel.AutoSize = true;
+            jiraEmailLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            jiraEmailLabel.Location = new System.Drawing.Point(5, 40);
+            jiraEmailLabel.Name = "jiraEmailLabel";
+            jiraEmailLabel.Size = new System.Drawing.Size(39, 15);
+            jiraEmailLabel.TabIndex = 2;
+            jiraEmailLabel.Text = "Email:";
             // 
             // jiraEmailBox
             // 
-            this.jiraEmailBox.Location = new System.Drawing.Point(45, 37);
-            this.jiraEmailBox.Name = "jiraEmailBox";
-            this.jiraEmailBox.Size = new System.Drawing.Size(320, 23);
-            this.jiraEmailBox.TabIndex = 3;
-            this.jiraEmailBox.TextChanged += new System.EventHandler(this.jiraEmailBox_TextChanged);
+            jiraEmailBox.Location = new System.Drawing.Point(45, 37);
+            jiraEmailBox.Name = "jiraEmailBox";
+            jiraEmailBox.Size = new System.Drawing.Size(320, 23);
+            jiraEmailBox.TabIndex = 3;
+            jiraEmailBox.TextChanged += jiraEmailBox_TextChanged;
             // 
             // jiraTokenLabel
             // 
-            this.jiraTokenLabel.AutoSize = true;
-            this.jiraTokenLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.jiraTokenLabel.Location = new System.Drawing.Point(5, 70);
-            this.jiraTokenLabel.Name = "jiraTokenLabel";
-            this.jiraTokenLabel.Size = new System.Drawing.Size(66, 15);
-            this.jiraTokenLabel.TabIndex = 4;
-            this.jiraTokenLabel.Text = "Jira Token:";
+            jiraTokenLabel.AutoSize = true;
+            jiraTokenLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            jiraTokenLabel.Location = new System.Drawing.Point(5, 70);
+            jiraTokenLabel.Name = "jiraTokenLabel";
+            jiraTokenLabel.Size = new System.Drawing.Size(66, 15);
+            jiraTokenLabel.TabIndex = 4;
+            jiraTokenLabel.Text = "Jira Token:";
             // 
             // tempoTokenLabel
             // 
-            this.tempoTokenLabel.AutoSize = true;
-            this.tempoTokenLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.tempoTokenLabel.Location = new System.Drawing.Point(5, 100);
-            this.tempoTokenLabel.Name = "tempoTokenLabel";
-            this.tempoTokenLabel.Size = new System.Drawing.Size(85, 15);
-            this.tempoTokenLabel.TabIndex = 7;
-            this.tempoTokenLabel.Text = "Tempo Token:";
+            tempoTokenLabel.AutoSize = true;
+            tempoTokenLabel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            tempoTokenLabel.Location = new System.Drawing.Point(5, 100);
+            tempoTokenLabel.Name = "tempoTokenLabel";
+            tempoTokenLabel.Size = new System.Drawing.Size(85, 15);
+            tempoTokenLabel.TabIndex = 7;
+            tempoTokenLabel.Text = "Tempo Token:";
             // 
             // jiraTokenBox
             // 
-            this.jiraTokenBox.Location = new System.Drawing.Point(70, 67);
-            this.jiraTokenBox.MaxLength = 192;
-            this.jiraTokenBox.Name = "jiraTokenBox";
-            this.jiraTokenBox.Size = new System.Drawing.Size(295, 23);
-            this.jiraTokenBox.TabIndex = 5;
-            this.jiraTokenBox.TextChanged += new System.EventHandler(this.InputBox_TextChanged);
+            jiraTokenBox.Location = new System.Drawing.Point(70, 67);
+            jiraTokenBox.MaxLength = 192;
+            jiraTokenBox.Name = "jiraTokenBox";
+            jiraTokenBox.Size = new System.Drawing.Size(295, 23);
+            jiraTokenBox.TabIndex = 5;
+            jiraTokenBox.TextChanged += InputBox_TextChanged;
             // 
             // tempoTokenBox
             // 
-            this.tempoTokenBox.Location = new System.Drawing.Point(90, 97);
-            this.tempoTokenBox.MaxLength = 30;
-            this.tempoTokenBox.Name = "tempoTokenBox";
-            this.tempoTokenBox.Size = new System.Drawing.Size(275, 23);
-            this.tempoTokenBox.TabIndex = 8;
-            this.tempoTokenBox.TextChanged += new System.EventHandler(this.InputBox_TextChanged);
+            tempoTokenBox.Location = new System.Drawing.Point(90, 97);
+            tempoTokenBox.MaxLength = 33;
+            tempoTokenBox.Name = "tempoTokenBox";
+            tempoTokenBox.Size = new System.Drawing.Size(275, 23);
+            tempoTokenBox.TabIndex = 8;
+            tempoTokenBox.TextChanged += InputBox_TextChanged;
             // 
             // jiraTokenSetupLabel
             // 
-            this.jiraTokenSetupLabel.AutoSize = true;
-            this.jiraTokenSetupLabel.Location = new System.Drawing.Point(370, 70);
-            this.jiraTokenSetupLabel.Name = "jiraTokenSetupLabel";
-            this.jiraTokenSetupLabel.Size = new System.Drawing.Size(37, 15);
-            this.jiraTokenSetupLabel.TabIndex = 6;
-            this.jiraTokenSetupLabel.TabStop = true;
-            this.jiraTokenSetupLabel.Text = "Setup";
-            this.jiraTokenSetupLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.jiraTokenSetupLabel_LinkClicked);
+            jiraTokenSetupLabel.AutoSize = true;
+            jiraTokenSetupLabel.Location = new System.Drawing.Point(370, 70);
+            jiraTokenSetupLabel.Name = "jiraTokenSetupLabel";
+            jiraTokenSetupLabel.Size = new System.Drawing.Size(37, 15);
+            jiraTokenSetupLabel.TabIndex = 6;
+            jiraTokenSetupLabel.TabStop = true;
+            jiraTokenSetupLabel.Text = "Setup";
+            jiraTokenSetupLabel.LinkClicked += jiraTokenSetupLabel_LinkClicked;
             // 
             // tempoTokenSetupLabel
             // 
-            this.tempoTokenSetupLabel.AutoSize = true;
-            this.tempoTokenSetupLabel.Enabled = false;
-            this.tempoTokenSetupLabel.Location = new System.Drawing.Point(370, 100);
-            this.tempoTokenSetupLabel.Name = "tempoTokenSetupLabel";
-            this.tempoTokenSetupLabel.Size = new System.Drawing.Size(37, 15);
-            this.tempoTokenSetupLabel.TabIndex = 9;
-            this.tempoTokenSetupLabel.TabStop = true;
-            this.tempoTokenSetupLabel.Text = "Setup";
-            this.tempoTokenSetupLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.tempoTokenSetupLabel_LinkClicked);
+            tempoTokenSetupLabel.AutoSize = true;
+            tempoTokenSetupLabel.Enabled = false;
+            tempoTokenSetupLabel.Location = new System.Drawing.Point(370, 100);
+            tempoTokenSetupLabel.Name = "tempoTokenSetupLabel";
+            tempoTokenSetupLabel.Size = new System.Drawing.Size(37, 15);
+            tempoTokenSetupLabel.TabIndex = 9;
+            tempoTokenSetupLabel.TabStop = true;
+            tempoTokenSetupLabel.Text = "Setup";
+            tempoTokenSetupLabel.LinkClicked += tempoTokenSetupLabel_LinkClicked;
             // 
             // Cancel_Button
             // 
-            this.Cancel_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_Button.Location = new System.Drawing.Point(180, 125);
-            this.Cancel_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.Cancel_Button.Name = "Cancel_Button";
-            this.Cancel_Button.Size = new System.Drawing.Size(90, 25);
-            this.Cancel_Button.TabIndex = 10;
-            this.Cancel_Button.Text = "Cancel";
-            this.Cancel_Button.UseVisualStyleBackColor = true;
-            this.Cancel_Button.Click += new System.EventHandler(this.Cancel_Button_Click);
+            Cancel_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            Cancel_Button.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            Cancel_Button.Location = new System.Drawing.Point(180, 125);
+            Cancel_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            Cancel_Button.Name = "Cancel_Button";
+            Cancel_Button.Size = new System.Drawing.Size(90, 25);
+            Cancel_Button.TabIndex = 10;
+            Cancel_Button.Text = "Cancel";
+            Cancel_Button.UseVisualStyleBackColor = true;
+            Cancel_Button.Click += Cancel_Button_Click;
             // 
             // OK_Button
             // 
-            this.OK_Button.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.OK_Button.Enabled = false;
-            this.OK_Button.Location = new System.Drawing.Point(275, 125);
-            this.OK_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.OK_Button.Name = "OK_Button";
-            this.OK_Button.Size = new System.Drawing.Size(90, 25);
-            this.OK_Button.TabIndex = 11;
-            this.OK_Button.Text = "OK";
-            this.OK_Button.UseVisualStyleBackColor = true;
-            this.OK_Button.Click += new System.EventHandler(this.OK_Button_Click);
+            OK_Button.Anchor = System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right;
+            OK_Button.Enabled = false;
+            OK_Button.Location = new System.Drawing.Point(275, 125);
+            OK_Button.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+            OK_Button.Name = "OK_Button";
+            OK_Button.Size = new System.Drawing.Size(90, 25);
+            OK_Button.TabIndex = 11;
+            OK_Button.Text = "OK";
+            OK_Button.UseVisualStyleBackColor = true;
+            OK_Button.Click += OK_Button_Click;
             // 
             // JiraSettingsDialog
             // 
-            this.AcceptButton = this.OK_Button;
+            this.AcceptButton = OK_Button;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.Cancel_Button;
+            this.CancelButton = Cancel_Button;
             this.ClientSize = new System.Drawing.Size(414, 156);
-            this.Controls.Add(this.tempoTokenSetupLabel);
-            this.Controls.Add(this.Cancel_Button);
-            this.Controls.Add(this.OK_Button);
-            this.Controls.Add(this.jiraTokenSetupLabel);
-            this.Controls.Add(this.tempoTokenBox);
-            this.Controls.Add(this.jiraTokenBox);
-            this.Controls.Add(this.tempoTokenLabel);
-            this.Controls.Add(this.jiraTokenLabel);
-            this.Controls.Add(this.jiraEmailBox);
-            this.Controls.Add(this.jiraEmailLabel);
-            this.Controls.Add(this.jiraURLBox);
-            this.Controls.Add(this.urlLabel);
+            this.Controls.Add(tempoTokenSetupLabel);
+            this.Controls.Add(Cancel_Button);
+            this.Controls.Add(OK_Button);
+            this.Controls.Add(jiraTokenSetupLabel);
+            this.Controls.Add(tempoTokenBox);
+            this.Controls.Add(jiraTokenBox);
+            this.Controls.Add(tempoTokenLabel);
+            this.Controls.Add(jiraTokenLabel);
+            this.Controls.Add(jiraEmailBox);
+            this.Controls.Add(jiraEmailLabel);
+            this.Controls.Add(jiraURLBox);
+            this.Controls.Add(urlLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "JiraSettingsDialog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Jira Settings";
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
+            ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion

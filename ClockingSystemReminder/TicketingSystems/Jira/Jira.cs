@@ -14,7 +14,7 @@ namespace ClockingSystemReminder.TicketingSystems.Jira
     public class Jira : ITicketingSystem
     {
         const string MYSELF_URI = "rest/api/3/myself";
-        const string QUERY_URI = "rest/issueNav/1/issueTable";
+        const string QUERY_URI = "rest/api/3/search";
         const string SEARCH_URI = "rest/api/3/issue/picker?currentJQL=project%20in%20projectsWhereUserHasPermission(%22Work%20on%20issues%22)%20order%20by%20lastViewed%20DESC&showSubTasks=true&showSubTaskParent=true";
 
         const string TEMPO_URL = "https://api.tempo.io/";
@@ -92,7 +92,7 @@ namespace ClockingSystemReminder.TicketingSystems.Jira
         private string[] FetchFavoriteTickets()
         {
             //TODO: Fetch from official Tempo API (not supported atm)
-            return new string[] { "TT-29", "TT-51", "TT-53", "TT-55", "TT-56", "TT-74" };
+            return new string[] { "TT-53", "TT-56", "TT-137", "TT-140", "TT-142", "TT-144", };
         }
 
         public IList<TicketInfo> GetAssignedTickets()
@@ -103,14 +103,15 @@ namespace ClockingSystemReminder.TicketingSystems.Jira
 
         private IList<TicketInfo> QueryTickets(string jql)
         {
-            var url = settings.URL + QUERY_URI;
+            var baseURL = settings.URL + QUERY_URI;
             var escapedJQL = Uri.EscapeDataString(jql);
+            var url = $"{baseURL}?jql={escapedJQL}&fields=summary,customfield_10008";
+
             var webRequest = WebUtils.CreateRequestWithAuth(url, settings.Email, settings.JiraToken);
             webRequest.Headers.Add("X-Atlassian-Token", "no-check"); //Bypass CORS
+            webRequest.Method = "GET";
 
-            var requestContent = $"jql={escapedJQL}";
-            var webResponse = WebUtils.MakePOSTRequest(webRequest, requestContent);
-
+            var webResponse = (HttpWebResponse)webRequest.GetResponse();
             var response = WebUtils.ReadResponse(webResponse);
             var jsonResponse = JObject.Parse(response);
             return ReadQueryResults(jsonResponse);
@@ -119,8 +120,8 @@ namespace ClockingSystemReminder.TicketingSystems.Jira
         private IList<TicketInfo> ReadQueryResults(JObject jsonResponse)
         {
             var results = new List<TicketInfo>();
-            var tickets = jsonResponse.Value<JObject>("issueTable").Value<JArray>("table");
-            foreach (var issue in tickets.Values<JObject>())
+            var issues = jsonResponse.Value<JArray>("issues");
+            foreach (var issue in issues.Values<JObject>())
             {
                 var ticketInfo = ReadTicketInfo(issue);
                 results.Add(ticketInfo);
@@ -130,11 +131,23 @@ namespace ClockingSystemReminder.TicketingSystems.Jira
 
         private TicketInfo ReadTicketInfo(JObject issue)
         {
+            var summary = ReadTicketSummary(issue);
             return new TicketInfo(
                 issue.Value<int>("id"),
                 issue.Value<string>("key"),
-                issue.Value<string>("summary")
+                summary
             );
+        }
+
+        private string ReadTicketSummary(JObject issue)
+        {
+            var summary = issue.Value<string>("summary");
+            if (string.IsNullOrEmpty(summary))
+            {
+                var fields = issue.Value<JObject>("fields");
+                summary = fields.Value<string>("summary");
+            }
+            return summary;
         }
 
         public IList<TicketInfo> SearchTickets(string query)

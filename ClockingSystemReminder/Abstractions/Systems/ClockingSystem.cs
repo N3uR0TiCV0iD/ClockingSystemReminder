@@ -67,6 +67,7 @@ namespace ClockingSystemReminder.Abstractions.Systems
         }
 
         public abstract string GetWebLoginURL();
+        public abstract TimeSpan GetTimeWorked(DateTime day);
         public abstract bool ClockIn();
         public abstract bool ClockOut();
         public abstract bool Login(BasicCredentials credentials);

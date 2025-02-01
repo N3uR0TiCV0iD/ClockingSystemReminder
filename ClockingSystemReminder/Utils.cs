@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Win32;
@@ -85,6 +86,13 @@ namespace ClockingSystemReminder
         public static bool IsWeekEnd(DayOfWeek dayOfWeek)
         {
             return dayOfWeek == DayOfWeek.Saturday || dayOfWeek == DayOfWeek.Sunday;
+        }
+
+        public static TimeSpan SumTimeSpans(IEnumerable<TimeSpan> timeSpans)
+        {
+            var totalTicks = timeSpans.Sum(t => t.Ticks);
+            var totalTimeSpan = new TimeSpan(totalTicks);
+            return totalTimeSpan;
         }
 
         public static bool ShowErrorRetryMessage(Exception exception)

@@ -28,6 +28,11 @@ namespace ClockingSystemReminder.ClockingSystems.Void
             return true;
         }
 
+        public override TimeSpan GetTimeWorked(DateTime day)
+        {
+            return TimeSpan.Zero;
+        }
+
         public override bool LogOut()
         {
             return true;

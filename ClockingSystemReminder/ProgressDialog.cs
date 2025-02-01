@@ -8,10 +8,12 @@ namespace ClockingSystemReminder
 
     public partial class ProgressDialog : Form
     {
-        bool done;
-        Action<ProgressDelegate> task;
+        public bool Success { get; set; }
 
-        public ProgressDialog(Action<ProgressDelegate> task)
+        bool done;
+        Func<ProgressDelegate, bool> task;
+
+        public ProgressDialog(Func<ProgressDelegate, bool> task)
         {
             this.task = task;
             InitializeComponent();
@@ -21,7 +23,7 @@ namespace ClockingSystemReminder
         {
             Task.Run(() =>
             {
-                task(OnProgress);
+                this.Success = task(OnProgress);
                 done = true;
                 this.Invoke(() => this.Close());
             });
@@ -40,16 +42,14 @@ namespace ClockingSystemReminder
         {
             const int SC_MOVE = 0xF010;
             const int WM_SYSCOMMAND = 0x0112;
-            switch (m.Msg)
+            if (m.Msg == WM_SYSCOMMAND)
             {
-                case WM_SYSCOMMAND:
-                    var command = m.WParam.ToInt32() & 0xFFF0;
-                    if (command == SC_MOVE)
-                    {
-                        //Do nothing, ie: prevent it from moving around
-                        return;
-                    }
-                break;
+                var command = m.WParam.ToInt32() & 0xFFF0;
+                if (command == SC_MOVE)
+                {
+                    //Do nothing, ie: prevent it from moving around
+                    return;
+                }
             }
             base.WndProc(ref m);
         }

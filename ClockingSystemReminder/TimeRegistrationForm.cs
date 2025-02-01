@@ -13,34 +13,39 @@ using Newtonsoft.Json;
 #pragma warning disable SA1300 // Element should begin with upper-case letter
 namespace ClockingSystemReminder
 {
+    //TODO: Allow meeting threshold (ie: if meeting start 5 minutes early...)
+
     public partial class TimeRegistrationForm : Form, IDisposable
     {
+        readonly TimeSpan workTime;
+        readonly DateTime registerDate; //In local time!
+        readonly DateTime registerDateUTC;
+
         readonly ITicketingSystem ticketingSystem;
         readonly ICollaborationSystem collaborationSystem;
+
+        readonly List<CallRecord> calls;
         readonly List<TimeRegistration> callRegistrations;
         readonly List<TimeRegistration> manualRegistrations;
         readonly List<TimeRegistration> meetingRegistrations;
         readonly RegistryKey recentTicketsRegistryKey;
 
         bool hasOffwork;
-        TimeSpan realWorkTime;
+        TimeSpan realWorkTime; //Time spent NOT in calls/meetings
         int rightClickedRowIndex;
         TicketPortfolio ticketPortfolio;
 
-#if DEBUG
-        //!!! TMP TMP TMP TMP TMP !!!
-        static DateTime REGISTER_DATE = new DateTime(2023, 5, 23);
-        static TimeSpan WORK_TIME = new TimeSpan(7, 30, 0).Add(TimeSpan.FromMinutes(30));
-        static List<CallRecord> CALLS = new List<CallRecord>();
-        static HashSet<string> SEEN_CHATS = new HashSet<string>();
-        //!!! TMP TMP TMP TMP TMP !!!
-#endif
-
-        public TimeRegistrationForm(ICollaborationSystem collaborationSystem, ITicketingSystem ticketingSystem)
+        public TimeRegistrationForm(DateTime registerDate, TimeSpan workTime,
+                                    ICollaborationSystem collaborationSystem, ITicketingSystem ticketingSystem)
         {
             InitializeComponent();
+            this.workTime = workTime;
+            this.registerDate = registerDate;
             this.ticketingSystem = ticketingSystem;
             this.collaborationSystem = collaborationSystem;
+            this.registerDateUTC = registerDate.ToUniversalTime();
+
+            this.calls = new List<CallRecord>();
             this.callRegistrations = new List<TimeRegistration>();
             this.manualRegistrations = new List<TimeRegistration>();
             this.meetingRegistrations = new List<TimeRegistration>();
@@ -49,23 +54,20 @@ namespace ClockingSystemReminder
 
         private void HourRegistration_Load(object sender, EventArgs e)
         {
-#if DEBUG
-            var workedHours = GetRoundedTimeSpan(WORK_TIME);
-#else
-            var workedHours = GetRoundedTimeSpan(ClockingManager.TimeWorked);
-#endif
+            var roundedWorkTime = GetRoundedTimeSpan(workTime);
 
             collaborationSystem.Init();
+
             var totalMeetingTime = LoadMeetings();
             var totalCallTime = LoadCalls();
 
             ticketingSystem.Init();
             LoadTicketPortfolio();
 
-            realWorkTime = workedHours - (totalMeetingTime + totalCallTime + TimeSpan.FromMinutes(30));
-            if (workedHours.TotalHours < ClockingManager.WORK_HOURS)
+            realWorkTime = roundedWorkTime - (totalMeetingTime + totalCallTime + TimeSpan.FromMinutes(30));
+            if (roundedWorkTime.TotalHours < ClockingManager.WORK_HOURS)
             {
-                var missingTime = TimeSpan.FromHours(ClockingManager.WORK_HOURS) - workedHours;
+                var missingTime = TimeSpan.FromHours(ClockingManager.WORK_HOURS) - roundedWorkTime;
                 var rows = manualRegistrationsView.Rows;
                 rows.Add(1);
 
@@ -81,6 +83,7 @@ namespace ClockingSystemReminder
             callsBox.Text = $"Calls (Total: {FormatShortTimeSpan(totalCallTime)})";
             meetingsBox.Text = $"Meetings (Total: {FormatShortTimeSpan(totalMeetingTime)})";
             OnManualRegistrationUpdate();
+            this.Text = $"Time Registration | {registerDate.ToString("dd/MM/yyyy")} | Time worked: {roundedWorkTime}";
         }
 
         private string FormatShortTimeSpan(TimeSpan timeSpan)
@@ -140,15 +143,9 @@ namespace ClockingSystemReminder
 
         private TimeSpan LoadMeetings()
         {
-#if DEBUG
-            var todayAsUtc = REGISTER_DATE;
-#else
-            var todayAsUtc = Utils.TodayAsUtc;
-#endif
-            var tomorrowAsUtc = todayAsUtc.AddDays(1);
-
             var totalDuration = TimeSpan.Zero;
-            var calendarEvents = collaborationSystem.GetCalendarEvents(todayAsUtc, tomorrowAsUtc);
+            var nextDay = registerDateUTC.AddDays(1);
+            var calendarEvents = collaborationSystem.GetCalendarEvents(registerDateUTC, nextDay);
             foreach (var calendarEvent in calendarEvents)
             {
                 var call = TryGetCallForCalendarEvent(calendarEvent);
@@ -204,47 +201,15 @@ namespace ClockingSystemReminder
             return null;
         }
 
-        //TODO: Move and display in GUI instead
-        private void PrintChat(CallRecord callRecord)
-        {
-#if DEBUG
-            var todayAsUtc = REGISTER_DATE;
-#else
-            var todayAsUtc = Utils.TodayAsUtc;
-#endif
-            var chatHistory = collaborationSystem.GetChatHistory(callRecord.ChatID);
-            foreach (var chatRecord in chatHistory)
-            {
-                var sendTime = chatRecord.SendTime;
-                if (sendTime.Date > todayAsUtc)
-                {
-                    continue;
-                }
-
-                if (sendTime.Date < todayAsUtc)
-                {
-                    break;
-                }
-
-                System.Diagnostics.Debug.Print($"[{sendTime}] {chatRecord.From}:");
-                System.Diagnostics.Debug.Print(chatRecord.Text);
-                System.Diagnostics.Debug.Print("");
-            }
-        }
-
         private TimeSpan LoadCalls()
         {
-#if DEBUG
-            var todayAsUtc = REGISTER_DATE;
-#else
-            var todayAsUtc = Utils.TodayAsUtc;
-#endif
-
             var totalDuration = TimeSpan.Zero;
+            var nextDay = registerDateUTC.AddDays(1);
             var callHistory = collaborationSystem.GetCallHistory();
             foreach (var call in callHistory)
             {
-                if (call.Period.StartTime < todayAsUtc)
+                var startTime = call.Period.StartTime;
+                if (startTime < registerDateUTC)
                 {
                     //Stop processing any remaining calls
                     break;
@@ -256,20 +221,15 @@ namespace ClockingSystemReminder
                     continue;
                 }
 
-                //!!! TMP TMP TMP TMP TMP !!!
-#if DEBUG
-                if (call.Period.StartTime.Date > todayAsUtc)
+                if (startTime >= nextDay)
                 {
-                    continue; //SKIP CALL
+                    continue;
                 }
-                CALLS.Add(call);
-#endif
-                //!!! TMP TMP TMP TMP TMP !!!
 
-                var startTime = call.Period.StartTime;
                 var participants = FormatParticipants(call.Participants);
                 RegisterCall(startTime, roundedDuration, participants, null, callsView, callRegistrations);
                 totalDuration += roundedDuration;
+                calls.Add(call);
             }
             callsView.ClearSelection();
             return totalDuration;
@@ -338,16 +298,7 @@ namespace ClockingSystemReminder
 
         private void callsView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            //!!! TMP TMP TMP TMP TMP !!!
-#if DEBUG
-            var call = CALLS[e.RowIndex];
-            if (!SEEN_CHATS.Contains(call.ChatID))
-            {
-                PrintChat(call);
-                SEEN_CHATS.Add(call.ChatID);
-            }
-#endif
-            //!!! TMP TMP TMP TMP TMP !!!
+            //TODO: Show chat window
             HandleCallEdit(callsView, callRegistrations, e.RowIndex);
         }
 
@@ -533,16 +484,11 @@ namespace ClockingSystemReminder
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-#if DEBUG
-            var utcToday = REGISTER_DATE;
-#else
-            var utcToday = Utils.UtcToday;
-#endif
             var registrations = meetingRegistrations.Concat(callRegistrations)
                                                     .Concat(manualRegistrations)
                                                     .ToList();
 
-            Action<ProgressDelegate> task = progressCallback =>
+            Func<ProgressDelegate, bool> task = progressCallback =>
             {
                 var totalCount = registrations.Count;
                 for (int index = 0; index < totalCount; index++)
@@ -551,31 +497,36 @@ namespace ClockingSystemReminder
                     progressCallback($"Registered {index}/{totalCount}", percentage);
 
                     var timeRegistration = registrations[index];
-                    if (!RegisterHour(timeRegistration, utcToday))
+                    if (!RegisterHour(timeRegistration))
                     {
-                        return;
+                        MessageBox.Show("Failed to register hours. Try registering them manually instead.\n\nHint: Use CTRL+C to copy the details of a selected row", "Failed to register hours.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return false;
                     }
                 }
                 progressCallback($"Registered {totalCount}/{totalCount}", 100);
                 MessageBox.Show("All hours have been successfully registered!", "Hours registered.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return true;
             };
 
             using (var progressDialog = new ProgressDialog(task))
             {
                 progressDialog.ShowDialog();
+                if (progressDialog.Success)
+                {
+                    SaveRecentTickets();
+                    this.Close();
+                }
             }
-            SaveRecentTickets();
-            this.Close();
         }
 
-        private bool RegisterHour(TimeRegistration timeRegistration, DateTime utcToday)
+        private bool RegisterHour(TimeRegistration timeRegistration)
         {
             var retry = true;
             while (retry)
             {
                 try
                 {
-                    ticketingSystem.RegisterHours(utcToday, timeRegistration);
+                    ticketingSystem.RegisterHours(registerDate, timeRegistration);
                     return true;
                 }
                 catch (WebException ex)

@@ -135,6 +135,11 @@ namespace ClockingSystemReminder.ClockingSystems.Capitech
             systemRegistryKey.DeleteValue("ClientID");
         }
 
+        public override TimeSpan GetTimeWorked(DateTime day)
+        {
+            throw new NotImplementedException();
+        }
+
         public override bool ClockIn()
         {
             return ClockAction(CLOCK_IN_URL, accessToken);

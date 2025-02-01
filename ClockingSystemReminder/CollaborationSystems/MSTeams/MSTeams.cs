@@ -60,7 +60,7 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
 
         public void OpenSettings()
         {
-            using (var settingsDialog = new MSTeamsSettingsForm(this.settings))
+            using (var settingsDialog = new MSTeamsSettingsDialog(this.settings))
             {
                 if (settingsDialog.ShowDialog() == DialogResult.OK)
                 {
@@ -82,58 +82,20 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
         {
             return settings.IsValid();
         }
-//TMP
-#pragma warning disable format
-#pragma warning disable SA1137 // Elements should have the same indentation
-// /TMP
+
         public void Init()
         {
-            //TMP
-#if DEBUG
-            var handler = new JwtSecurityTokenHandler();
-            if (System.IO.File.Exists("ad.txt"))
+            if (this.MyUser != null)
             {
-                this.azureADToken = System.IO.File.ReadAllText("ad.txt");
+                return;
             }
-            var decodedToken = azureADToken != null ? handler.ReadJwtToken(azureADToken) : null;
-            if (decodedToken == null || decodedToken.ValidTo < DateTime.UtcNow)
-            {
-            // /TMP
-#endif
 
             this.azureADToken = GetAzureADToken();
-
-            //TMP
-#if DEBUG
-                System.IO.File.WriteAllText("ad.txt", this.azureADToken);
-            }
-
-            if (System.IO.File.Exists("sk.txt"))
-            {
-                this.skypeToken = System.IO.File.ReadAllText("sk.txt");
-            }
-            decodedToken = skypeToken != null ? handler.ReadJwtToken(skypeToken) : null;
-            if (decodedToken == null || decodedToken.ValidTo < DateTime.UtcNow)
-            {
-            // /TMP
-#endif
-
             this.skypeToken = GetSkypeToken();
-
-            //TMP
-#if DEBUG
-                System.IO.File.WriteAllText("sk.txt", this.skypeToken);
-            }
-#endif
-            // /TMP
 
             this.MyUser = BuildSelfUser();
             cachedUsers[this.MyUser.UserID] = this.MyUser;
         }
-//TMP
-#pragma warning restore SA1137 // Elements should have the same indentation
-#pragma warning restore format
-// /TMP
 
         private string GetAzureADToken()
         {
@@ -333,6 +295,13 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
                 content = content.Substring(endedTag.Length);
             }
 
+            const string expectedEndTag = "</partlist>";
+            if (!content.EndsWith(expectedEndTag))
+            {
+                var substringEnd = content.LastIndexOfAfter(expectedEndTag);
+                content = content.Substring(0, substringEnd);
+            }
+
             var callData = XDocument.Parse(content);
             var participantsList = callData.Descendants("partlist");
             var participants = ReadParticipants(participantsList, out int duration);
@@ -471,6 +440,11 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
             foreach (var user in values.Values<JObject>())
             {
                 var userID = user.Value<string>("mri"); //Microsoft Resource Identifier?
+                if (!userID.StartsWith("8:orgid:"))
+                {
+                    continue;
+                }
+
                 var givenName = user.Value<string>("givenName");
                 var surname = user.Value<string>("surname");
 

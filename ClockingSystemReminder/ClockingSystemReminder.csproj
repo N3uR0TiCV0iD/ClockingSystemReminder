@@ -8,6 +8,7 @@
 	<Nullable>enable</Nullable>
 	-->
   </PropertyGroup>
+
   <ItemGroup>
     <Content Include="Icon.ico" />
   </ItemGroup>
@@ -23,10 +24,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="ClockingSystems\WinTid\WinTidSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="ManualRegistrationDialog.cs">
+      <SubType>Form</SubType>
     </Compile>
   </ItemGroup>
 

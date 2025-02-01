@@ -12,10 +12,11 @@ namespace ClockingSystemReminder
     {
         const int TIMEWORKED_REFRESH_DELAY = 5000;
 
-        NotifyIcon trayIcon;
-        Stopwatch lastRefreshStopwatch;
-        ToolStripMenuItem clockActionMenuItem;
-        ToolStripMenuItem scheduleClockActionMenuItem;
+        readonly NotifyIcon trayIcon;
+        readonly Stopwatch lastRefreshStopwatch;
+        readonly ToolStripMenuItem clockActionMenuItem;
+        readonly ToolStripMenuItem manualRegistrationMenuItem;
+        readonly ToolStripMenuItem scheduleClockActionMenuItem;
 
         public ClockingSystemForm() : base("WARNING: You have not clocked-out yet!", Resources.Icon)
         {
@@ -27,18 +28,22 @@ namespace ClockingSystemReminder
             scheduleClockActionMenuItem = new ToolStripMenuItem("Schedule Clock-Out");
             scheduleClockActionMenuItem.Click += scheduleClockOutMenuItem_Click;
 
-            ToolStripMenuItem settingsMenuItem = new ToolStripMenuItem("Settings");
+            manualRegistrationMenuItem = new ToolStripMenuItem("Manual Registration");
+            manualRegistrationMenuItem.Click += manualRegistrationMenuItem_Click;
+
+            var settingsMenuItem = new ToolStripMenuItem("Settings");
             settingsMenuItem.Click += settingsMenuItem_Click;
 
-            ToolStripMenuItem closeMenuItem = new ToolStripMenuItem("Close");
+            var closeMenuItem = new ToolStripMenuItem("Close");
             closeMenuItem.Font = new Font(closeMenuItem.Font, FontStyle.Bold);
             closeMenuItem.Click += exitActionItem_Click;
 
-            ContextMenuStrip menu = new ContextMenuStrip();
+            var menu = new ContextMenuStrip();
             menu.Items.Add(clockActionMenuItem);
             menu.Items.Add(new ToolStripSeparator());
 
             menu.Items.Add(scheduleClockActionMenuItem);
+            menu.Items.Add(manualRegistrationMenuItem);
             menu.Items.Add(settingsMenuItem);
             menu.Items.Add(new ToolStripSeparator());
             menu.Items.Add(closeMenuItem);
@@ -106,6 +111,17 @@ namespace ClockingSystemReminder
                     ClockingManager.ScheduledClockActionTime = scheduledTime;
                     MessageBox.Show($"{clockActionMenuItem.Text} has been scheduled @ {scheduledTime:HH:mm}",
                                     "Schedule successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void manualRegistrationMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var registrationDialog = new ManualRegistrationDialog(ClockingManager.ClockingSystem))
+            {
+                if (registrationDialog.ShowDialog() == DialogResult.OK)
+                {
+                    ClockingManager.OpenTimeRegistration(registrationDialog.SelectedDate, registrationDialog.WorkTime);
                 }
             }
         }

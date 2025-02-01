@@ -8,7 +8,8 @@ namespace ClockingSystemReminder
 {
     internal static class Program
     {
-        public const string REGISTRY_KEY_PATH = "Software\\ClockingSystemReminder";
+        public const string APP_NAME = "ClockingSystemReminder";
+        public const string REGISTRY_KEY_PATH = $"Software\\{APP_NAME}";
         public static LocalEncrypter LocalEncrypter { get; private set; }
 
         [STAThread]
@@ -20,9 +21,12 @@ namespace ClockingSystemReminder
 #if DEBUG
         private static void DEBUG_Startup()
         {
-            var jira = TicketingSystems.TicketingSystemResolver.Load("Jira");
-            var msTeams = CollaborationSystems.CollaborationSystemResolver.Load("MSTeams");
-            Application.Run(new TimeRegistrationForm(msTeams, jira));
+            var ticketingSystem = TicketingSystems.TicketingSystemResolver.Load("Jira");
+            var collaborationSystem = CollaborationSystems.CollaborationSystemResolver.Load("MSTeams");
+
+            var registerDate = new DateTime(2025, 1, 1);
+            var workTime = new TimeSpan(7, 30, 0).Add(TimeSpan.FromMinutes(30));
+            Application.Run(new TimeRegistrationForm(registerDate, workTime, collaborationSystem, ticketingSystem));
         }
 #endif
 
@@ -34,16 +38,13 @@ namespace ClockingSystemReminder
             //Protects data against casual observation, not robust against a targeted attack
             LocalEncrypter = new LocalEncrypter("Digi7aLH0urgla55");
 
-#if DEBUG
-            DEBUG_Startup();
-#endif
-
             using (var appRegistryKey = Registry.CurrentUser.CreateSubKey(REGISTRY_KEY_PATH))
             {
+                AutoStartupHelper.CheckAutoStartup(appRegistryKey, APP_NAME);
+
                 var today = DateTime.Today;
                 var lastClockOut = appRegistryKey.GetDateTimeValue("LastClockOut");
-                AutoStartupHelper.CheckAutoStartup(appRegistryKey, "ClockingSystemReminder");
-                if (HasCompletedWorkday(today, lastClockOut, appRegistryKey))
+                if (HasCompletedWorkday(today, lastClockOut, appRegistryKey) && !ExtraWorkCheck())
                 {
                     return;
                 }
@@ -79,6 +80,17 @@ namespace ClockingSystemReminder
             }
             TimeSpan timeWorked = appRegistryKey.GetTimeSpanValue("TimeWorked");
             return timeWorked.TotalHours >= ClockingManager.WORK_HOURS;
+        }
+
+        private static bool ExtraWorkCheck()
+        {
+            if (MessageBox.Show("Looks like you have already completed your work for the day...\nAre you planning to keep working today?",
+                                "Extra Work Prompt", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                MessageBox.Show("Ah, a missclick? That's OK :)", "Have a nice day!", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return false;
+            }
+            return true;
         }
 
         private static bool WeekendWorkCheck()

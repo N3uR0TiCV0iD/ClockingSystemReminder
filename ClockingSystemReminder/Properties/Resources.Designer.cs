@@ -71,7 +71,7 @@ namespace ClockingSystemReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {&quot;approve&quot;:true,&quot;from&quot;:&quot;{0}T23:00:00.000Z&quot;,&quot;to&quot;:&quot;{1}T23:00:00.000Z&quot;,&quot;activeIdentity&quot;:{&quot;Username&quot;:&quot;{2}&quot;,&quot;EmployeeId&quot;:{3},&quot;PositionId&quot;:&quot;{4}&quot;,&quot;Description&quot;:&quot;{5}&quot;,&quot;ReadOnly&quot;:false,&quot;PositionIdValue&quot;:{6}},&quot;activeRole&quot;:1}.
+        ///   Looks up a localized string similar to {&quot;approve&quot;:true,&quot;from&quot;:&quot;{0}T23:00:00.000Z&quot;,&quot;to&quot;:&quot;{1}T23:00:00.000Z&quot;,&quot;positionIds&quot;:[&quot;{3}&quot;],&quot;activeIdentity&quot;:{&quot;EmployeeId&quot;:{2},&quot;PositionId&quot;:&quot;{3}&quot;,&quot;Description&quot;:&quot;{4}&quot;,&quot;ReadOnly&quot;:false},&quot;activeRole&quot;:{5}}.
         /// </summary>
         internal static string WinTidApprovePayload {
             get {
@@ -89,7 +89,7 @@ namespace ClockingSystemReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {&quot;activeIdentity&quot;:{&quot;EmployeeId&quot;:{0},&quot;PositionId&quot;:&quot;{1}&quot;,&quot;IsPrimary&quot;:true,&quot;Description&quot;:&quot;{2}&quot;},&quot;activeRole&quot;:1}.
+        ///   Looks up a localized string similar to {&quot;activeIdentity&quot;:{&quot;EmployeeId&quot;:{0},&quot;PositionId&quot;:&quot;{1}&quot;,&quot;IsPrimary&quot;:true,&quot;Description&quot;:&quot;{2}&quot;},&quot;activeRole&quot;:{3}}.
         /// </summary>
         internal static string WinTidPayload {
             get {
@@ -98,7 +98,16 @@ namespace ClockingSystemReminder.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to {&quot;date&quot;:&quot;{0}T22:00:00.000Z&quot;,&quot;weekly&quot;:false,&quot;activeIdentity&quot;:{&quot;EmployeeId&quot;:45,&quot;PositionId&quot;:&quot;7005960&quot;,&quot;IsPrimary&quot;:true,&quot;Description&quot;:&quot;7005960&quot;},&quot;activeRole&quot;:1}.
+        ///   Looks up a localized string similar to {&quot;date&quot;:&quot;{0}T23:00:00.000Z&quot;,&quot;useStandardMode&quot;:true,&quot;activeIdentity&quot;:{&quot;EmployeeId&quot;:{1},&quot;PositionId&quot;:&quot;{2}&quot;,&quot;PositionIdValue&quot;:{2},&quot;Description&quot;:&quot;{3}&quot;,&quot;ReadOnly&quot;:false},&quot;activeRole&quot;:{4}}.
+        /// </summary>
+        internal static string WinTidRegistrationsPayload {
+            get {
+                return ResourceManager.GetString("WinTidRegistrationsPayload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {&quot;date&quot;:&quot;{0}T22:00:00.000Z&quot;,&quot;weekly&quot;:false,&quot;activeIdentity&quot;:{&quot;EmployeeId&quot;:{1},&quot;PositionId&quot;:&quot;{2}&quot;,&quot;IsPrimary&quot;:true,&quot;Description&quot;:&quot;{3}&quot;},&quot;activeRole&quot;:{4}}.
         /// </summary>
         internal static string WinTidSchedulePayload {
             get {

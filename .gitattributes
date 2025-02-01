@@ -1,0 +1,8 @@
+# Generic rule for all files
+# Converts CRLF to LF on commit (always) and LF to CRLF on checkout (on Windows)
+* text=auto
+
+# Specific rule for specific filetypes 
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.sh text eol=lf

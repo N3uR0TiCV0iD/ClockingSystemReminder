@@ -8,11 +8,11 @@ namespace ClockingSystemReminder
     {
         public ScheduleTimeDialog()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             InitializeComponent();
-            hourBox.Minimum = now.Hour;
-            hourBox.Value = now.Hour + 1;
-            minuteBox.Value = now.Minute;
+            this.hourBox.Minimum = now.Hour;
+            this.hourBox.Value = now.Hour + 1;
+            this.minuteBox.Value = now.Minute;
         }
 
         public DateTime DateTime

@@ -11,7 +11,7 @@ namespace ClockingSystemReminder
 {
     public partial class TicketRegistrationDialog : Form
     {
-        const int MAX_MINUTEBOX_INDEX = 3;
+        const int MAX_MINUTEBOX_INDEX = 3; //ie: Minute "00"
 
         readonly TimeSpan allocatableTime;
         readonly TicketPortfolio ticketPortfolio;
@@ -44,6 +44,7 @@ namespace ClockingSystemReminder
                 this.timeTrackBar.Maximum = minuteFractions;
 
                 this.hoursBox.Maximum = this.allocatableTime.Hours;
+                this.prevMinuteSelectedIndex = MAX_MINUTEBOX_INDEX;
                 this.maxHourMinMinuteIndex = GetMinuteIndex(this.allocatableTime.Minutes);
                 this.minutesBox.BackColor = Color.White;
             }
@@ -303,7 +304,7 @@ namespace ClockingSystemReminder
         {
             if (hoursBox.Value == 0)
             {
-                RestorePreviousMinuteSelectedIndex();
+                minutesBox.SelectedIndex = MAX_MINUTEBOX_INDEX;
                 return;
             }
             hoursBox.Value--;

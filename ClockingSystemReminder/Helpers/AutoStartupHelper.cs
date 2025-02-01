@@ -35,8 +35,8 @@ namespace ClockingSystemReminder.Helpers
                         new TaskDialogButton("No, delete it"),
                         new TaskDialogButton(TaskDialogButton.Yes.Text)
                     };
-                    var result = ShowTaskDialog("Looks like you've moved the app since it was last added to the Windows startup...\n\nWould you like to add it to the Windows startup again?",
-                                                "App has been moved", TaskDialogIcon.Warning, 2, buttons);
+                    var result = TaskDialogHelper.ShowDialog("Looks like you've moved the app since it was last added to the Windows startup...\n\nWould you like to add it to the Windows startup again?",
+                                                             "App has been moved", TaskDialogIcon.Warning, 2, buttons);
                     if (result == 2)
                     {
                         AddAppToStartup(startupRegistryKey, startupName);
@@ -47,33 +47,6 @@ namespace ClockingSystemReminder.Helpers
                     }
                 }
             }
-        }
-
-        //Could me moved to a Util class :P
-        private static int ShowTaskDialog(string text, string title, TaskDialogIcon icon, int defaultIndex, params TaskDialogButton[] buttons)
-        {
-            if (defaultIndex < 0 || defaultIndex >= buttons.Length)
-            {
-                throw new ArgumentOutOfRangeException(nameof(defaultIndex));
-            }
-
-            var taskDialogPage = new TaskDialogPage()
-            {
-                Text = text,
-                Caption = title,
-                Icon = icon,
-                SizeToContent = true
-            };
-
-            var buttonCollection = taskDialogPage.Buttons;
-            foreach (var button in buttons)
-            {
-                buttonCollection.Add(button);
-            }
-            taskDialogPage.DefaultButton = buttons[defaultIndex];
-
-            var result = TaskDialog.ShowDialog(taskDialogPage);
-            return Array.IndexOf(buttons, result);
         }
 
         private static void AddAppToStartup(RegistryKey startupRegistryKey, string startupName)

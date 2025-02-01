@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <OutputType>WinExe</OutputType> <!-- Do not create a console window on startup -->
+	<!--
+    <ApplicationIcon>Icon.ico</ApplicationIcon>
+	-->
+	<Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ClockingSystemReminder\ClockingSystemReminder.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="WeekRotationScheduleDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!--
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+  </ItemGroup>
+  -->
+</Project>

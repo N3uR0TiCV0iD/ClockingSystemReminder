@@ -22,7 +22,8 @@ namespace ClockingSystemReminder
         const int POLLING_DELAY = 15 * 1000; //15 seconds
 
         public static DateTime? ScheduledClockActionTime { get; set; }
-        public static LocalEncrypter LocalEncrypter { get; private set; }
+
+        public static ClockingSystem ClockingSystem => clockingSystem;
         public static bool ClockedIn { get; private set; }
 
         static bool running;
@@ -344,15 +345,20 @@ namespace ClockingSystemReminder
             systemForm.Invoke(() =>
             {
                 systemForm.OnClockOut();
-                using (var timeRegistrationForm = new TimeRegistrationForm(collaborationSystem, ticketingSystem))
-                {
-                    timeRegistrationForm.ShowDialog();
-                }
+                OpenTimeRegistration(DateTime.Today, ClockingManager.TimeWorked);
             });
             if (!clockingSystem.OnPostClockOut())
             {
                 MessageBox.Show("The Post-ClockOut process has failed!",
                                 "Post-ClockOut failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        public static void OpenTimeRegistration(DateTime registerDate, TimeSpan workTime)
+        {
+            using (var timeRegistrationForm = new TimeRegistrationForm(registerDate, workTime, collaborationSystem, ticketingSystem))
+            {
+                timeRegistrationForm.ShowDialog();
             }
         }
 
