@@ -335,23 +335,33 @@ namespace ClockingSystemReminder
 
         private static void OnClockOut()
         {
+            var timeWorked = workStopwatch.Elapsed;
             ClockedIn = false;
             workStopwatch.Stop();
             using (RegistryKey appRegistryKey = Registry.CurrentUser.OpenSubKey(Program.REGISTRY_KEY_PATH, true))
             {
                 appRegistryKey.SetDateTimeValue("LastClockOut", DateTime.Now);
-                appRegistryKey.SetTimeSpanValue("TimeWorked", workStopwatch.Elapsed);
+                appRegistryKey.SetTimeSpanValue("TimeWorked", timeWorked);
             }
             systemForm.Invoke(() =>
             {
                 systemForm.OnClockOut();
-                OpenTimeRegistration(DateTime.Today, ClockingManager.TimeWorked);
+                if (timeWorked.Hours >= WORK_HOURS || DoneWorkingPrompt())
+                {
+                    OpenTimeRegistration(DateTime.Today, ClockingManager.TimeWorked);
+                }
             });
             if (!clockingSystem.OnPostClockOut())
             {
                 MessageBox.Show("The Post-ClockOut process has failed!",
                                 "Post-ClockOut failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private static bool DoneWorkingPrompt()
+        {
+            return MessageBox.Show("Are you done working for the day?",
+                                   "Done working?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         public static void OpenTimeRegistration(DateTime registerDate, TimeSpan workTime)
