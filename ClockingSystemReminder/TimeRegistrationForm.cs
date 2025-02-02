@@ -298,7 +298,8 @@ namespace ClockingSystemReminder
 
         private void callsView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            //TODO: Show chat window
+            //TODO: Show chat window | TODO: Make a sort of "iterator" helper
+            //var chatHistory = collaborationSystem.GetChatHistory(callRecord.ChatID);
             HandleCallEdit(callsView, callRegistrations, e.RowIndex);
         }
 

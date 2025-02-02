@@ -20,6 +20,7 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
 {
     public class MSTeams : ICollaborationSystem
     {
+        //TODO: Add token refresh
         const int NEXTURL_DELAY = 650;
 
         const string LOGIN_URL = "https://microsoft.com/devicelogin";
