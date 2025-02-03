@@ -30,8 +30,7 @@ namespace ClockingSystemReminder
         {
             get
             {
-                const int lunchTimeMinutes = 30;
-                var totalMinutes = ((int)hourBox.Value * 60) + (int)minuteBox.Value + lunchTimeMinutes;
+                var totalMinutes = ((int)hourBox.Value * 60) + (int)minuteBox.Value;
                 return TimeSpan.FromMinutes(totalMinutes);
             }
         }
@@ -57,8 +56,8 @@ namespace ClockingSystemReminder
                 //NOTE: Do not change the order here...
                 hourBox.Minimum = 0;
                 hourBox.Maximum = 16;
-                hourBox.Value = 7; //NOTE: Will set minuteBox's minimum & maximum
-                minuteBox.Value = 30;
+                hourBox.Value = 8; //NOTE: Will set minuteBox's minimum & maximum
+                minuteBox.Value = 0;
             }
             minuteBox.ReadOnly = hasTimeWorked;
             hourBox.ReadOnly = hasTimeWorked;

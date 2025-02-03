@@ -44,7 +44,6 @@ namespace ClockingSystemReminder
                 this.timeTrackBar.Maximum = minuteFractions;
 
                 this.hoursBox.Maximum = this.allocatableTime.Hours;
-                this.prevMinuteSelectedIndex = MAX_MINUTEBOX_INDEX;
                 this.maxHourMinMinuteIndex = GetMinuteIndex(this.allocatableTime.Minutes);
                 this.minutesBox.BackColor = Color.White;
             }
@@ -102,7 +101,9 @@ namespace ClockingSystemReminder
             get => int.Parse(minutesBox.Text);
             set
             {
-                minutesBox.SelectedIndex = GetMinuteIndex(value);
+                var minuteIndex = GetMinuteIndex(value);
+                prevMinuteSelectedIndex = minuteIndex;
+                minutesBox.SelectedIndex = minuteIndex;
             }
         }
 

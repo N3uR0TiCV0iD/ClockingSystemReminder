@@ -3,7 +3,6 @@ using System.Media;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
-using ClockingSystemReminder.Abstractions;
 using ClockingSystemReminder.Abstractions.Systems;
 using ClockingSystemReminder.ClockingSystems;
 using ClockingSystemReminder.CollaborationSystems;
@@ -215,7 +214,7 @@ namespace ClockingSystemReminder
 
         private static BasicCredentials OpenLoginForm()
         {
-            using (AbstractLoginDialog loginDialog = clockingSystem.CreateLoginDialog())
+            using (var loginDialog = clockingSystem.CreateLoginDialog())
             {
                 if (systemForm != null) //Is the system form running?
                 {
@@ -315,7 +314,7 @@ namespace ClockingSystemReminder
             ClockedIn = true;
             workStopwatch?.Start();
             systemForm?.Invoke(() => systemForm.OnClockIn());
-            using (RegistryKey appRegistryKey = Registry.CurrentUser.OpenSubKey(Program.REGISTRY_KEY_PATH, true))
+            using (var appRegistryKey = Registry.CurrentUser.OpenSubKey(Program.REGISTRY_KEY_PATH, true))
             {
                 var now = DateTime.Now;
                 var lastClockIn = appRegistryKey.GetDateTimeValue("LastClockIn");
@@ -335,23 +334,33 @@ namespace ClockingSystemReminder
 
         private static void OnClockOut()
         {
+            var timeWorked = workStopwatch.Elapsed;
             ClockedIn = false;
             workStopwatch.Stop();
-            using (RegistryKey appRegistryKey = Registry.CurrentUser.OpenSubKey(Program.REGISTRY_KEY_PATH, true))
+            using (var appRegistryKey = Registry.CurrentUser.OpenSubKey(Program.REGISTRY_KEY_PATH, true))
             {
                 appRegistryKey.SetDateTimeValue("LastClockOut", DateTime.Now);
-                appRegistryKey.SetTimeSpanValue("TimeWorked", workStopwatch.Elapsed);
+                appRegistryKey.SetTimeSpanValue("TimeWorked", timeWorked);
             }
             systemForm.Invoke(() =>
             {
                 systemForm.OnClockOut();
-                OpenTimeRegistration(DateTime.Today, ClockingManager.TimeWorked);
+                if (timeWorked.Hours >= WORK_HOURS || DoneWorkingPrompt())
+                {
+                    OpenTimeRegistration(DateTime.Today, ClockingManager.TimeWorked);
+                }
             });
             if (!clockingSystem.OnPostClockOut())
             {
                 MessageBox.Show("The Post-ClockOut process has failed!",
                                 "Post-ClockOut failed", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private static bool DoneWorkingPrompt()
+        {
+            return MessageBox.Show("Are you done working for the day?",
+                                   "Done working?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes;
         }
 
         public static void OpenTimeRegistration(DateTime registerDate, TimeSpan workTime)

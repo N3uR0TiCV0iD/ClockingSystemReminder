@@ -180,7 +180,7 @@ namespace ClockingSystemReminder
 
         public static string ReadResponse(HttpWebResponse webResponse)
         {
-            using (StreamReader responseReader = new StreamReader(webResponse.GetResponseStream()))
+            using (var responseReader = new StreamReader(webResponse.GetResponseStream()))
             {
                 return responseReader.ReadToEnd();
             }
