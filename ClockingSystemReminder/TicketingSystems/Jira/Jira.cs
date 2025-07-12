@@ -92,7 +92,7 @@ namespace ClockingSystemReminder.TicketingSystems.Jira
         private string[] FetchFavoriteTickets()
         {
             //TODO: Fetch from official Tempo API (not supported atm)
-            return new string[] { "TT-53", "TT-56", "TT-137", "TT-140", "TT-142", "TT-144", };
+            return new string[] { "TT-53", "TT-56", "TT-123", "TT-140", "TT-145", "TT-122", "TT-125", "TT-128" };
         }
 
         public IList<TicketInfo> GetAssignedTickets()

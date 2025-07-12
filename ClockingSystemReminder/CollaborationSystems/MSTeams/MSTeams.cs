@@ -20,6 +20,7 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
 {
     public class MSTeams : ICollaborationSystem
     {
+        //TODO: Add token refresh
         const int NEXTURL_DELAY = 650;
 
         const string LOGIN_URL = "https://microsoft.com/devicelogin";
@@ -345,8 +346,13 @@ namespace ClockingSystemReminder.CollaborationSystems.MSTeams
                 foreach (var call in callMessages.Values<JObject>())
                 {
                     var callLogData = call.Value<JObject>("properties").Value<string>("call-log"); //NOTE: This is an encoded JSON string!
-                    var callLog = JObject.Parse(callLogData);
+                    if (callLogData == null)
+                    {
+                        //Not a valid "voice call"
+                        continue;
+                    }
 
+                    var callLog = JObject.Parse(callLogData);
                     var connectTime = callLog.ValueAsNullableUTCDateTime("connectTime"); //Basically when YOU joined
                     if (connectTime == null)
                     {

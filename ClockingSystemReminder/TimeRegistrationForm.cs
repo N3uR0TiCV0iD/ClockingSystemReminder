@@ -65,6 +65,12 @@ namespace ClockingSystemReminder
             LoadTicketPortfolio();
 
             realWorkTime = roundedWorkTime - (totalMeetingTime + totalCallTime + TimeSpan.FromMinutes(30));
+            if (realWorkTime < TimeSpan.Zero)
+            {
+                MessageBox.Show("Warning: It seems some meeting or call went on for longer than expected?",
+                                "Warning: Long meeting?", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                realWorkTime = TimeSpan.Zero;
+            }
             if (roundedWorkTime.TotalHours < ClockingManager.WORK_HOURS)
             {
                 var missingTime = TimeSpan.FromHours(ClockingManager.WORK_HOURS) - roundedWorkTime;
@@ -298,7 +304,8 @@ namespace ClockingSystemReminder
 
         private void callsView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            //TODO: Show chat window
+            //TODO: Show chat window | TODO: Make a sort of "iterator" helper
+            //var chatHistory = collaborationSystem.GetChatHistory(callRecord.ChatID);
             HandleCallEdit(callsView, callRegistrations, e.RowIndex);
         }
 
